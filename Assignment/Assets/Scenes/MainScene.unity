@@ -1,0 +1,45 @@
+using UnityEngine;
+
+public class SceneSetup : MonoBehaviour
+{
+    [Header("Prefab References")]
+    public GameObject playerPrefab;
+    public GameObject vehiclePrefab;
+    public GameObject[] pickupObjectPrefabs;
+
+    [Header("Scene Parameters")]
+    public int numberOfPickupObjects = 5;
+
+    void Start()
+    {
+        SetupScene();
+    }
+
+    void SetupScene()
+    {
+        GameObject player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+        GameObject vehicle = Instantiate(vehiclePrefab, new Vector3(5, 0, 5), Quaternion.identity);
+        VehiclePrefab vehicleScript = vehicle.GetComponent<VehiclePrefab>();
+        for (int i = 0; i < numberOfPickupObjects; i++)
+        {
+            GameObject pickupObject = Instantiate(
+                pickupObjectPrefabs[Random.Range(0, pickupObjectPrefabs.Length)],
+                new Vector3(Random.Range(-5f, 5f), 1f, Random.Range(-5f, 5f)),
+                Quaternion.identity
+            );
+
+            // Optional: Configure object interaction
+            ObjectInteraction interaction = player.GetComponent<ObjectInteraction>();
+            if (interaction != null)
+            {
+                interaction.vehicleDropZone = vehicleScript.GetDropZone();
+            }
+        }
+        Camera mainCamera = Camera.main;
+        if (mainCamera != null)
+        {
+            mainCamera.transform.position = player.transform.position + new Vector3(0, 2f, -5f);
+            mainCamera.transform.LookAt(player.transform);
+        }
+    }
+}

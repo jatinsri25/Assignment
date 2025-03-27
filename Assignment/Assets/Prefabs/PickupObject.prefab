@@ -1,7 +1,34 @@
-fileFormatVersion: 2
-guid: 7d7a9c73acb314a4f8f3b22bb2c8c44c
-PrefabImporter:
-  externalObjects: {}
-  userData:
-  assetBundleName:
-  assetBundleVariant:
+using UnityEngine;
+
+public class PickupObjectPrefab : MonoBehaviour
+{
+    [Header("Object Properties")]
+    public float mass = 1f;
+    public Vector3 objectSize = new Vector3(0.5f, 0.5f, 0.5f);
+    public Color defaultColor = Color.gray;
+
+    void Start()
+    {
+        ConfigurePickupObject();
+    }
+
+    void ConfigurePickupObject()
+    {
+        Rigidbody rb = gameObject.AddComponent<Rigidbody>();
+        rb.mass = mass;
+        rb.useGravity = true;
+        rb.isKinematic = false;
+        BoxCollider boxCollider = gameObject.AddComponent<BoxCollider>();
+        boxCollider.size = objectSize;
+        Renderer renderer = gameObject.GetComponent<Renderer>();
+        renderer.material.color = defaultColor;
+        gameObject.layer = LayerMask.NameToLayer("PickupObjects");
+        gameObject.tag = "Pickupable";
+    }
+
+    public void ResetColor()
+    {
+        Renderer renderer = GetComponent<Renderer>();
+        renderer.material.color = defaultColor;
+    }
+}

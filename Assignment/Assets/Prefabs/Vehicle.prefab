@@ -1,7 +1,42 @@
-fileFormatVersion: 2
-guid: 3e5f1f10d1d924f43b3a7c3d7e3b091d
-PrefabImporter:
-  externalObjects: {}
-  userData:
-  assetBundleName:
-  assetBundleVariant:
+using UnityEngine;
+
+public class VehiclePrefab : MonoBehaviour
+{
+    [Header("Vehicle Configuration")]
+    public Vector3 vehicleSize = new Vector3(3f, 2f, 5f);
+    public Color vehicleColor = Color.white;
+    public Transform dropZone;
+
+    void Start()
+    {
+        ConfigureVehicle();
+    }
+
+    void ConfigureVehicle()
+    {
+        // Add Box Collider
+        BoxCollider vehicleCollider = gameObject.AddComponent<BoxCollider>();
+        vehicleCollider.size = vehicleSize;
+        Renderer renderer = gameObject.AddComponent<Renderer>();
+        renderer.material.color = vehicleColor;
+
+        // Create Drop Zone
+        if (dropZone == null)
+        {
+            GameObject dropZoneObject = new GameObject("DropZone");
+            dropZoneObject.transform.SetParent(transform);
+            dropZoneObject.transform.localPosition = new Vector3(0, 1f, 1f);
+            
+            BoxCollider dropZoneCollider = dropZoneObject.AddComponent<BoxCollider>();
+            dropZoneCollider.size = new Vector3(2f, 1f, 2f);
+            dropZoneCollider.isTrigger = true;
+
+            dropZone = dropZoneObject.transform;
+        }
+    }
+
+    public Transform GetDropZone()
+    {
+        return dropZone;
+    }
+}
