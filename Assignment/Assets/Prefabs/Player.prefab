@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class PlayerPrefab : MonoBehaviour
 {
-    // Player configuration
     [Header("Player Settings")]
     public float height = 1.8f;
     public float radius = 0.4f;
@@ -15,19 +14,18 @@ public class PlayerPrefab : MonoBehaviour
 
     void ConfigurePlayerComponents()
     {
-        // Add Character Controller
+
         CharacterController controller = gameObject.AddComponent<CharacterController>();
         controller.height = height;
         controller.radius = radius;
         controller.center = new Vector3(0, height/2, 0);
 
-        // Add Player Controller Script
+        
         gameObject.AddComponent<PlayerController>();
 
-        // Add Object Interaction Script
+        
         gameObject.AddComponent<ObjectInteraction>();
 
-        // Configure Renderer
         Renderer renderer = gameObject.AddComponent<Renderer>();
         renderer.material.color = playerColor;
     }
